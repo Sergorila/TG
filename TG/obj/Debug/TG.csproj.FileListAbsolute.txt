@@ -1,0 +1,7 @@
+C:\Users\Sergey\source\repos\TG\TG\bin\Debug\TG.exe.config
+C:\Users\Sergey\source\repos\TG\TG\bin\Debug\TG.exe
+C:\Users\Sergey\source\repos\TG\TG\bin\Debug\TG.pdb
+C:\Users\Sergey\source\repos\TG\TG\obj\Debug\TG.csprojAssemblyReference.cache
+C:\Users\Sergey\source\repos\TG\TG\obj\Debug\TG.csproj.CoreCompileInputs.cache
+C:\Users\Sergey\source\repos\TG\TG\obj\Debug\TG.exe
+C:\Users\Sergey\source\repos\TG\TG\obj\Debug\TG.pdb
