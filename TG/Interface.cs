@@ -50,9 +50,14 @@ namespace TG
                 string v1 = Console.ReadLine();
                 Console.Write("Конечная вершина: ");
                 string v2 = Console.ReadLine();
-                Console.Write("Вес ребра: ");
-                int weight = int.Parse(Console.ReadLine());
-                g.EdgeAdd(v1, v2, weight);
+                if (g.IsWeighted)
+                {
+                    Console.Write("Вес ребра: ");
+                    int weight = int.Parse(Console.ReadLine());
+                    g.EdgeAdd(v1, v2, weight);
+                }
+                else
+                    g.EdgeAdd(v1, v2);
                 g.Show();
                 Console.WriteLine();
                 Menu(g, fout);
@@ -84,5 +89,6 @@ namespace TG
 
             return 0;
         }
+
     }
 }

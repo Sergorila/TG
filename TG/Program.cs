@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,24 +14,44 @@ namespace TG
     {
         static void Main(string[] args)
         {
-            string path = "input.txt";
+            string path1 = "Directed.txt";
+            string path2 = "DirectedWeighted.txt";
+            string path3 = "NoDirected.txt";
+            string path4 = "NoDirectedWeighted.txt";
             string fout = "output.txt";
-            Graph g = new Graph(path);
+            string s = AddG(path1, path2, path3, path4);
+            Graph g = new Graph(s);
             Interface.Menu(g, fout);
-            //g.Show();
+        }
 
-            //g.VertDel("5");
-            //g.Show();
-
-            //g.EdgeDel("1", "2");
-            //g.Show();
-
-            //g.IsDirected = false;
-            //g.EdgeDel("3", "4");
-            //g.Show();
-
-            //string fout = "output.txt";
-            //g.Print(fout);
+        static string AddG(string s1, string s2, string s3, string s4)
+        {
+            Console.WriteLine("Выберите файл:");
+            Console.WriteLine("1 - Directed.txt");
+            Console.WriteLine("2 - DirectedWeighted.txt");
+            Console.WriteLine("3 - NoDirected.txt");
+            Console.WriteLine("4 - NoDirectedWeighted.txt");
+            int n = int.Parse(Console.ReadLine());
+            switch (n)
+            {
+                case 1:
+                    return s1;
+                    break;
+                case 2:
+                    return s2;
+                    break;
+                case 3:
+                    return s3;
+                    break;
+                case 4:
+                    return s4;
+                    break;
+                default:
+                    Console.WriteLine("Попробуйте ещё рaз");
+                    AddG(s1, s2, s3, s4);
+                    break;
+            }
+            return "";
         }
     }
 }

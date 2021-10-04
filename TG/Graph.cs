@@ -11,6 +11,7 @@ namespace TG
     {
         public Dictionary<string, Dictionary<string, int>> graph;
         public bool isDirected = true;
+        public bool isWeighted = true;
 
         public bool IsDirected
         {
@@ -21,6 +22,18 @@ namespace TG
             set
             {
                 isDirected = value;
+            }
+        }
+
+        public bool IsWeighted
+        {
+            get
+            {
+                return isWeighted;
+            }
+            set
+            {
+                isWeighted = value;
             }
         }
 
@@ -41,10 +54,13 @@ namespace TG
         public Graph(string file)
         {
             graph = new Dictionary<string, Dictionary<string, int>>();
+            
             using (StreamReader fileIn = new StreamReader(file, Encoding.GetEncoding(1251)))
             {
                 string temp;
                 string[] vert;
+                isDirected = bool.Parse(fileIn.ReadLine());
+                isWeighted = bool.Parse(fileIn.ReadLine());
                 Dictionary<string, int> verts = new Dictionary<string, int>();
                 while ((temp = fileIn.ReadLine()) != null)
                 {
@@ -52,8 +68,13 @@ namespace TG
                     Dictionary<string, int> VertsNext = new Dictionary<string, int>();
                     for (int i = 1; i < v.Length; i++)
                     {
-                        vert = v[i].Split(':');
-                        VertsNext.Add(vert[0], int.Parse(vert[1]));
+                        if (IsWeighted)
+                        {
+                            vert = v[i].Split(':');
+                            VertsNext.Add(vert[0], int.Parse(vert[1]));
+                        }
+                        else
+                            VertsNext.Add(v[i], 0);
                     }
 
                     graph.Add(v[0], VertsNext);
@@ -76,6 +97,19 @@ namespace TG
             {
                 graph[v1].Add(v2, weight);
                 graph[v2].Add(v1, weight);
+            }
+        }
+
+        public void EdgeAdd(string v1, string v2)
+        {
+            if (isDirected)
+            {
+                graph[v1].Add(v2, 0);
+            }
+            else
+            {
+                graph[v1].Add(v2, 0);
+                graph[v2].Add(v1, 0);
             }
         }
 
@@ -125,7 +159,12 @@ namespace TG
                 Console.Write("{0} -> ", i.Key);
                 foreach (var j in i.Value)
                 {
-                    Console.Write("{0}({1}) ", j.Key, j.Value);
+                    if (IsWeighted)
+                    {
+                        Console.Write("{0}({1}) ", j.Key, j.Value);
+                    }
+                    else
+                        Console.Write("{0} ", j.Key);
                 }
                 Console.WriteLine();
             }
