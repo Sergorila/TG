@@ -84,71 +84,112 @@ namespace TG
 
         public void VertAdd(string v)
         {
-            graph.Add(v, new Dictionary<string, int>());
+            if (graph.ContainsKey(v))
+            {
+                Console.WriteLine("Вершина уже существует");
+                Console.WriteLine();
+            }
+            else
+                graph.Add(v, new Dictionary<string, int>());
         }
 
         public void EdgeAdd(string v1, string v2, int weight)
         {
-            if (isDirected)
+            if (graph.ContainsKey(v1) && graph.ContainsKey(v2))
             {
-                graph[v1].Add(v2, weight);
+                if (weight >= 0)
+                {
+                    if (isDirected)
+                    {
+                        graph[v1].Add(v2, weight);
+                    }
+                    else
+                    {
+                        graph[v1].Add(v2, weight);
+                        graph[v2].Add(v1, weight);
+                    }
+                }
             }
             else
             {
-                graph[v1].Add(v2, weight);
-                graph[v2].Add(v1, weight);
+                Console.WriteLine("Неправильно введены вершины");
+                Console.WriteLine();
             }
         }
 
         public void EdgeAdd(string v1, string v2)
         {
-            if (isDirected)
+            if (graph.ContainsKey(v1) && graph.ContainsKey(v2))
             {
-                graph[v1].Add(v2, 0);
+                if (isDirected)
+                    {
+                        graph[v1].Add(v2, 0);
+                    }
+                    else
+                    {
+                        graph[v1].Add(v2, 0);
+                        graph[v2].Add(v1, 0);
+                    }
             }
             else
             {
-                graph[v1].Add(v2, 0);
-                graph[v2].Add(v1, 0);
+                Console.WriteLine("Неправильно введены вершины");
+                Console.WriteLine();
             }
         }
 
         public void VertDel(string v)
         {
-            graph.Remove(v);
-            foreach (var item in graph)
+            if (graph.ContainsKey(v))
             {
-                graph[item.Key].Remove(v);
+                graph.Remove(v);
+                foreach (var item in graph)
+                {
+                    graph[item.Key].Remove(v);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Такой вершины нет");
+                Console.WriteLine();
             }
         }
 
         public void EdgeDel(string v1, string v2)
         {
-            if (isDirected)
+            if (graph.ContainsKey(v1) && graph.ContainsKey(v2))
             {
-                foreach (var item in graph)
+                if (isDirected)
                 {
-                    if (item.Key.Equals(v1))
+                    foreach (var item in graph)
                     {
-                        graph[item.Key].Remove(v2);
+                        if (item.Key.Equals(v1))
+                        {
+                            graph[item.Key].Remove(v2);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var item in graph)
+                    {
+                        if (item.Key.Equals(v1))
+                        {
+                            graph[item.Key].Remove(v2);
+                        }
+                        if (item.Key.Equals(v2))
+                        {
+                            graph[item.Key].Remove(v1);
+                        }
                     }
                 }
             }
             else
             {
-                foreach (var item in graph)
-                {
-                    if (item.Key.Equals(v1))
-                    {
-                        graph[item.Key].Remove(v2);
-                    }
-                    if (item.Key.Equals(v2))
-                    {
-                        graph[item.Key].Remove(v1);
-                    }
-                }
-
+                Console.WriteLine("Неправильно введены вершины");
+                Console.WriteLine();
             }
+            
         }
 
         public void Show()
