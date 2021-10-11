@@ -97,16 +97,33 @@ namespace TG
         {
             if (graph.ContainsKey(v1) && graph.ContainsKey(v2))
             {
-                if (weight >= 0)
+                bool exst = false;
+                foreach (var item in graph[v1])
                 {
-                    if (isDirected)
+                    if (item.Key == v2)
                     {
-                        graph[v1].Add(v2, weight);
+                        exst = true;
+                        break;
                     }
-                    else
+                }
+                if (exst == true)
+                {
+                    Console.WriteLine("Ребро уже существует");
+                    Console.WriteLine();
+                }
+                else
+                {
+                    if (weight >= 0)
                     {
-                        graph[v1].Add(v2, weight);
-                        graph[v2].Add(v1, weight);
+                        if (isDirected)
+                        {
+                            graph[v1].Add(v2, weight);
+                        }
+                        else
+                        {
+                            graph[v1].Add(v2, weight);
+                            graph[v2].Add(v1, weight);
+                        }
                     }
                 }
             }
@@ -119,9 +136,26 @@ namespace TG
 
         public void EdgeAdd(string v1, string v2)
         {
+            
             if (graph.ContainsKey(v1) && graph.ContainsKey(v2))
             {
-                if (isDirected)
+                bool exst = false;
+                foreach (var item in graph[v1])
+                {
+                    if (item.Key == v2)
+                    {
+                        exst = true;
+                        break;
+                    }
+                }
+                if (exst == true)
+                {
+                    Console.WriteLine("Ребро уже существует");
+                    Console.WriteLine();
+                }
+                else
+                {
+                    if (isDirected)
                     {
                         graph[v1].Add(v2, 0);
                     }
@@ -130,12 +164,15 @@ namespace TG
                         graph[v1].Add(v2, 0);
                         graph[v2].Add(v1, 0);
                     }
+                }
+                
             }
             else
             {
                 Console.WriteLine("Неправильно введены вершины");
                 Console.WriteLine();
             }
+            
         }
 
         public void VertDel(string v)
@@ -159,30 +196,48 @@ namespace TG
         {
             if (graph.ContainsKey(v1) && graph.ContainsKey(v2))
             {
-                if (isDirected)
+                bool exst = false;
+                foreach (var item in graph[v1])
                 {
-                    foreach (var item in graph)
+                    if (item.Key == v2)
                     {
-                        if (item.Key.Equals(v1))
-                        {
-                            graph[item.Key].Remove(v2);
-                        }
+                        exst = true;
+                        break;
                     }
+                }
+                if (exst == false)
+                {
+                    Console.WriteLine("Такого ребра нет");
+                    Console.WriteLine();
                 }
                 else
                 {
-                    foreach (var item in graph)
+                    if (isDirected)
                     {
-                        if (item.Key.Equals(v1))
+                        foreach (var item in graph)
                         {
-                            graph[item.Key].Remove(v2);
+                            if (item.Key.Equals(v1))
+                            {
+                                graph[item.Key].Remove(v2);
+                            }
                         }
-                        if (item.Key.Equals(v2))
+                    }
+                    else
+                    {
+                        foreach (var item in graph)
                         {
-                            graph[item.Key].Remove(v1);
+                            if (item.Key.Equals(v1))
+                            {
+                                graph[item.Key].Remove(v2);
+                            }
+                            if (item.Key.Equals(v2))
+                            {
+                                graph[item.Key].Remove(v1);
+                            }
                         }
                     }
                 }
+                
             }
             else
             {

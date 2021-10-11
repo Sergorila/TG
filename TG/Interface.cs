@@ -29,6 +29,7 @@ namespace TG
             {
                 Console.Write("Введите вершину которую хотите добавить: ");
                 string v = Console.ReadLine();
+                Console.WriteLine();
                 g.VertAdd(v);
                 g.Show();
                 Console.WriteLine();
@@ -38,6 +39,7 @@ namespace TG
             {
                 Console.Write("Введите вершину которую хотите удалить: ");
                 string v = Console.ReadLine();
+                Console.WriteLine();
                 g.VertDel(v);
                 g.Show();
                 Console.WriteLine();
@@ -46,7 +48,7 @@ namespace TG
             if (n == 4)
             {
                 Console.WriteLine("Введите ребро которое хотите добавить:");
-                Console.WriteLine("Начальная вершина: ");
+                Console.Write("Начальная вершина: ");
                 string v1 = Console.ReadLine();
                 Console.Write("Конечная вершина: ");
                 string v2 = Console.ReadLine();
@@ -58,6 +60,7 @@ namespace TG
                 }
                 else
                     g.EdgeAdd(v1, v2);
+                Console.WriteLine();
                 g.Show();
                 Console.WriteLine();
                 Menu(g, fout);
@@ -65,10 +68,11 @@ namespace TG
             if (n == 5)
             {
                 Console.WriteLine("Введите ребро которое хотите удалить:");
-                Console.WriteLine("Начальная вершина: ");
+                Console.Write("Начальная вершина: ");
                 string v1 = Console.ReadLine();
                 Console.Write("Конечная вершина: ");
                 string v2 = Console.ReadLine();
+                Console.WriteLine();
                 g.EdgeDel(v1, v2);
                 g.Show();
                 Console.WriteLine();
