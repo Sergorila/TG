@@ -213,6 +213,27 @@ namespace TG
             
             Console.WriteLine();
         }
+
+        public void VertNotAdj(string v)
+        {
+            if (graph.ContainsKey(v))
+            {
+                Console.Write("Вершины графа, не смежные с {0}: ", v);
+                foreach (var item in graph)
+                {
+                    if (!item.Value.ContainsKey(v) && item.Key != v)
+                    {
+                        Console.Write("{0}, ", item.Key);
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Такой вершины нет");
+            }
+            
+            Console.WriteLine();
+        }
         public void EdgeDel(string v1, string v2)
         {
             if (graph.ContainsKey(v1) && graph.ContainsKey(v2))
