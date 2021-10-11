@@ -17,6 +17,7 @@ namespace TG
             Console.WriteLine("4 - добавить ребро");
             Console.WriteLine("5 - удалить ребро");
             Console.WriteLine("6 - выход");
+            Console.WriteLine("7 - степень");
             int n = int.Parse(Console.ReadLine());
             if (n == 1)
             {
@@ -85,9 +86,16 @@ namespace TG
                 return 0;
             }
 
-            if (n > 6 || n < 1)
+            if (n > 7 || n < 1)
             {
                 Console.WriteLine("Попробуйте заново и введите данные корректно");
+                Menu(g, fout);
+            }
+            if (n == 7)
+            {
+                Console.Write("Введите вершину: ");
+                string v = Console.ReadLine();
+                g.HalfDegree(v);
                 Menu(g, fout);
             }
 

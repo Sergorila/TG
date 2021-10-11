@@ -192,6 +192,27 @@ namespace TG
             }
         }
 
+        public void HalfDegree(string v)
+        {
+            if (graph.ContainsKey(v))
+            {
+                int halfdeg = graph[v].Count / 2;
+                Console.Write("Вершины, полустепень исхода которых больше: ");
+                foreach (var item in graph)
+                {
+                    if (item.Value.Count / 2 > halfdeg && item.Key != v)
+                    {
+                        Console.Write("{0}, ", item.Key);
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Такой вершины нет");
+            }
+            
+            Console.WriteLine();
+        }
         public void EdgeDel(string v1, string v2)
         {
             if (graph.ContainsKey(v1) && graph.ContainsKey(v2))
