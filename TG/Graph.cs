@@ -196,11 +196,11 @@ namespace TG
         {
             if (graph.ContainsKey(v))
             {
-                int halfdeg = graph[v].Count / 2;
+                int halfdeg = graph[v].Count;
                 Console.Write("Вершины, полустепень исхода которых больше: ");
                 foreach (var item in graph)
                 {
-                    if (item.Value.Count / 2 > halfdeg && item.Key != v)
+                    if (item.Value.Count > halfdeg && item.Key != v)
                     {
                         Console.Write("{0}, ", item.Key);
                     }

@@ -11,3 +11,10 @@ C:\Users\sidorovsa\Desktop\TG\TG\bin\Debug\TG.pdb
 C:\Users\sidorovsa\Desktop\TG\TG\obj\Debug\TG.csprojAssemblyReference.cache
 C:\Users\sidorovsa\Desktop\TG\TG\obj\Debug\TG.exe
 C:\Users\sidorovsa\Desktop\TG\TG\obj\Debug\TG.pdb
+C:\Users\Sergey\Desktop\TG\TG\bin\Debug\TG.exe.config
+C:\Users\Sergey\Desktop\TG\TG\bin\Debug\TG.exe
+C:\Users\Sergey\Desktop\TG\TG\bin\Debug\TG.pdb
+C:\Users\Sergey\Desktop\TG\TG\obj\Debug\TG.csprojAssemblyReference.cache
+C:\Users\Sergey\Desktop\TG\TG\obj\Debug\TG.csproj.CoreCompileInputs.cache
+C:\Users\Sergey\Desktop\TG\TG\obj\Debug\TG.exe
+C:\Users\Sergey\Desktop\TG\TG\obj\Debug\TG.pdb
