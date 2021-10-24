@@ -13,6 +13,26 @@ namespace TG
         public bool isDirected = true;
         public bool isWeighted = true;
 
+        Dictionary<string, bool> nov = new Dictionary<string, bool>();
+        private int[,] array; //матрица смежности
+        public int this[int i, int j] //индексатор для обращения к матрице смежности
+        {
+            get
+            {
+                return array[i, j];
+            }
+            set
+            {
+                array[i, j] = value;
+            }
+        }
+        public int Size //свойство для получения размерности матрицы смежности
+        {
+            get
+            {
+                return array.GetLength(0);
+            }
+        }
         public bool IsDirected
         {
             get
@@ -80,6 +100,51 @@ namespace TG
                     graph.Add(v[0], VertsNext);
                 }
             }
+        }
+
+        public void NovSet() //метод помечает все вершины графа как непросмотреные
+        {
+            foreach (var item in graph)
+            {
+                nov[item.Key] = true;
+            }
+        }
+
+        public void Dfs(string v)
+        {
+            Console.WriteLine("{0} ", v);
+            nov[v] = false;
+
+            foreach (var u in graph.Keys)
+            {
+                //если вершины v и u смежные, к тому же вершина u не просмотрена,
+                if (graph[v].ContainsKey(u) && nov[u])
+                {
+                    Dfs(u); // то рекурсивно просматриваем вершину
+                }
+            }
+        }
+
+        public bool IsStrongConnect()
+        {
+            bool f = true;
+            string v = "";
+            foreach (var item in graph.Keys)
+            {
+                v = item;
+                break;
+            }
+            NovSet();
+            Dfs(v);
+            foreach (var elem in nov)
+            {
+                if (elem.Value == true)
+                {
+                    f = false;
+                    break;
+                }
+            }
+            return f;
         }
 
         public void VertAdd(string v)
