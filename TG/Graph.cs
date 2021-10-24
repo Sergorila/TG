@@ -289,6 +289,32 @@ namespace TG
             
         }
 
+        public Graph OrGraphComplement(Graph g)
+        {
+            Graph comp = new Graph();
+            comp.isDirected = g.isDirected;
+            comp.isWeighted = g.isWeighted;
+
+            foreach (var vert in g.graph)
+            {
+                comp.VertAdd(vert.Key);
+            }
+
+            foreach (var vert in g.graph)
+            {
+                foreach (var adjv in g.graph.Keys)
+                {
+                    if (!vert.Value.ContainsKey(adjv) && vert.Key != adjv)
+                        {
+                            comp.EdgeAdd(vert.Key, adjv);
+                        }
+                    
+                }
+            }
+
+            return comp;
+        }
+
         public void Show()
         {
             Console.WriteLine("Полученный граф: ");

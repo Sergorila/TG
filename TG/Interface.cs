@@ -19,6 +19,7 @@ namespace TG
             Console.WriteLine("6 - выход");
             Console.WriteLine("7 - степень");
             Console.WriteLine("8 - не смежые вершины");
+            Console.WriteLine("9 - дополнение графа");
             int n = int.Parse(Console.ReadLine());
             if (n == 1)
             {
@@ -87,7 +88,7 @@ namespace TG
                 return 0;
             }
 
-            if (n > 8 || n < 1)
+            if (n > 9 || n < 1)
             {
                 Console.WriteLine("Попробуйте заново и введите данные корректно");
                 Menu(g, fout);
@@ -104,6 +105,15 @@ namespace TG
                 Console.Write("Введите вершину: ");
                 string v = Console.ReadLine();
                 g.VertNotAdj(v);
+                Menu(g, fout);
+            }
+
+            if (n == 9)
+            {
+                Graph comp = g.OrGraphComplement(g);
+                Console.WriteLine("Дополнение графа: ");
+                Console.WriteLine();
+                comp.Show();
                 Menu(g, fout);
             }
 
