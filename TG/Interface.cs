@@ -22,6 +22,7 @@ namespace TG
             Console.WriteLine("9 - дополнение графа");
             Console.WriteLine("10 - Dfs");
             Console.WriteLine("11 - Проверка на сильную связь");
+            Console.WriteLine("12 - Центр");
             int n = int.Parse(Console.ReadLine());
             if (n == 1)
             {
@@ -90,7 +91,7 @@ namespace TG
                 return 0;
             }
 
-            if (n > 11 || n < 1)
+            if (n > 12 || n < 1)
             {
                 Console.WriteLine("Попробуйте заново и введите данные корректно");
                 Menu(g, fout);
@@ -141,6 +142,13 @@ namespace TG
                 {
                     Console.WriteLine("Граф не сильносвязен");
                 }
+                Menu(g, fout);
+            }
+
+            if (n == 12)
+            {
+                g.NovSet();
+                g.Center("1");
                 Menu(g, fout);
             }
 

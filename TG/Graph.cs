@@ -125,6 +125,48 @@ namespace TG
             }
         }
 
+        public void Center(string t)
+        {
+            Queue<string> q = new Queue<string>();
+            Dictionary<string, int> dist = new Dictionary<string, int>();
+            q.Enqueue(t);
+            //foreach (var item in graph.Keys)
+            //{
+            //    q.Enqueue(item);
+            //    break;
+            //}
+            int i = 1;
+            while (q.Count != 0)
+            {
+                string v = q.Peek();
+                if (nov[v] == true)
+                {
+                    nov[v] = false;
+                    foreach (var vert in graph[v])
+                    {
+                        if (nov[vert.Key] == true)
+                        {
+                            //nov[vert.Key] = false;
+                            dist.Add(vert.Key, i);
+                            q.Enqueue(vert.Key);
+                        }
+                    }
+                    i++;
+                }
+                else
+                {
+                    q.Dequeue();
+                }
+            }
+
+            Console.WriteLine("Dist");
+            foreach (var elem in dist)
+            {
+                Console.Write("{0}({1}), ", elem.Key, elem.Value);
+            }
+                
+        }
+
         public bool IsStrongConnect()
         {
             bool f = true;

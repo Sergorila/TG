@@ -18,7 +18,7 @@ namespace TG
             string path2 = "DirectedWeighted.txt";
             string path3 = "NoDirected.txt";
             string path4 = "NoDirectedWeighted.txt";
-            string path5 = "DirForComp.txt";
+            string path5 = "DirForComp2.txt";
             string fout = "output.txt";
             string s = AddG(path1, path2, path3, path4, path5);
             Graph g = new Graph(s);
