@@ -147,8 +147,7 @@ namespace TG
 
             if (n == 12)
             {
-                g.NovSet();
-                g.Center("1");
+                g.Center();
                 Menu(g, fout);
             }
 

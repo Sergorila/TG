@@ -125,46 +125,117 @@ namespace TG
             }
         }
 
-        public void Center(string t)
+        public long[] ShortPaths(string v)
         {
-            Queue<string> q = new Queue<string>();
-            Dictionary<string, int> dist = new Dictionary<string, int>();
-            q.Enqueue(t);
-            //foreach (var item in graph.Keys)
-            //{
-            //    q.Enqueue(item);
-            //    break;
-            //}
-            int i = 1;
-            while (q.Count != 0)
+            NovSet();
+            nov[v] = false;
+            int[,] c = new int[graph.Keys.Count, graph.Keys.Count];
+            Dictionary<string, int> VERSINI = new Dictionary<string, int>();
+            int i = 0;
+            foreach(var u in graph.Keys)
             {
-                string v = q.Peek();
-                if (nov[v] == true)
+                VERSINI.Add(u, i);
+                i++;
+            }
+
+            foreach (var u in graph.Keys)
+            {
+                foreach(var j in VERSINI.Keys)
                 {
-                    nov[v] = false;
-                    foreach (var vert in graph[v])
-                    {
-                        if (nov[vert.Key] == true)
-                        {
-                            //nov[vert.Key] = false;
-                            dist.Add(vert.Key, i);
-                            q.Enqueue(vert.Key);
-                        }
-                    }
-                    i++;
+                    if (!graph[u].ContainsKey(j) || u == j)
+                        c[VERSINI[u], VERSINI[j]] = int.MaxValue;
+                    else
+                        c[VERSINI[u], VERSINI[j]] = 1;
                 }
-                else
+            }
+            long[] d = new long[graph.Keys.Count];
+
+            foreach (var u in graph.Keys)
+            {
+                if (u != v)
                 {
-                    q.Dequeue();
+                    d[VERSINI[u]] = c[VERSINI[v], VERSINI[u]];
                 }
             }
 
-            Console.WriteLine("Dist");
-            foreach (var elem in dist)
+            for (int j = 0; j < graph.Keys.Count - 1; j++)
             {
-                Console.Write("{0}({1}), ", elem.Key, elem.Value);
+                long min = int.MaxValue;
+                string w = v;
+                foreach(var u in graph.Keys)
+                {
+                    if (nov[u] && min > d[VERSINI[u]])
+                    {
+                        min = d[VERSINI[u]];
+                        w = u;
+                    }
+                }
+                nov[w] = false;
+                foreach(var u in graph.Keys)
+                {
+                    long dist = d[VERSINI[w]] + c[VERSINI[w], VERSINI[u]];
+                    if (nov[u] && d[VERSINI[u]] > dist)
+                    {
+                        d[VERSINI[u]] = dist;
+                    }
+                }
             }
+            return d;   
                 
+        }
+
+        public void Center()
+        {
+            long[][] AllDist = new long[graph.Keys.Count][];
+            int l = 0;
+            Dictionary<string, int> VERSINI = new Dictionary<string, int>();
+            foreach (var u in graph.Keys)
+            {
+                VERSINI.Add(u, l);
+                l++;
+            }
+
+            foreach (var u in VERSINI.Keys)
+            {
+                AllDist[VERSINI[u]] = new long[graph.Keys.Count];
+                long[] dist = ShortPaths(u);
+                for (int i = 0; i < dist.Length; i++)
+                    AllDist[VERSINI[u]][i] = dist[i];
+            }
+
+            long[] MaX = new long[graph.Keys.Count];
+
+            for (int j = 0; j < graph.Keys.Count; j++)
+            {
+                long MMaX = -1;
+                for (int i = 0; i < graph.Keys.Count; i++)
+                {
+                    if (AllDist[i][j] != int.MaxValue && AllDist[i][j] != 0 && AllDist[i][j] > MMaX)
+                        MMaX = AllDist[i][j];
+                }
+                MaX[j] = MMaX;   
+            }
+
+
+            long min = int.MaxValue;
+            for (int i = 0; i < MaX.Length; i++)
+            {
+                if (MaX[i] < min && MaX[i] != -1)
+                {
+                    min = MaX[i];
+                }
+            }
+
+            Console.WriteLine("Центр графа: ");
+            foreach(var item in graph.Keys)
+            {
+                if (MaX[VERSINI[item]] == min)
+                {
+                    Console.Write(item + " ");
+                }
+            }
+            Console.WriteLine();
+
         }
 
         public bool IsStrongConnect()
