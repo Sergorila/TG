@@ -23,6 +23,7 @@ namespace TG
             Console.WriteLine("10 - Dfs");
             Console.WriteLine("11 - Проверка на сильную связь");
             Console.WriteLine("12 - Центр");
+            Console.WriteLine("13 - Каркас (Прим)");
             int n = int.Parse(Console.ReadLine());
             if (n == 1)
             {
@@ -91,7 +92,7 @@ namespace TG
                 return 0;
             }
 
-            if (n > 12 || n < 1)
+            if (n > 13 || n < 1)
             {
                 Console.WriteLine("Попробуйте заново и введите данные корректно");
                 Menu(g, fout);
@@ -148,6 +149,12 @@ namespace TG
             if (n == 12)
             {
                 g.Center();
+                Menu(g, fout);
+            }
+
+            if (n == 13)
+            {
+                g.Prim(g);
                 Menu(g, fout);
             }
 

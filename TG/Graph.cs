@@ -238,6 +238,99 @@ namespace TG
 
         }
 
+        public void Prim(Graph g)
+        {
+            Dictionary<string, int> VERSINI = new Dictionary<string, int>();
+            int i = 0;
+            foreach (var u in g.graph.Keys)
+            {
+                VERSINI.Add(u, i);
+                i++;
+            }
+
+            //неиспользованные ребра
+            List<Edge> notUsedE = new List<Edge>();
+            //использованные вершины
+            List<string> usedV = new List<string>();
+            //неиспользованные вершины
+            List<string> notUsedV = new List<string>();
+
+            List<Edge> MST = new List<Edge>();
+
+            foreach (var item in g.graph.Keys)
+            {
+                notUsedV.Add(item);
+                foreach(var elem in g.graph[item])
+                {
+                    Edge temp = new Edge(item, elem.Key, elem.Value);
+                    notUsedE.Add(temp);
+                }
+            }
+
+            string start = "";
+            foreach (var item in notUsedV)
+            {
+                start = item;
+                break;
+            }
+
+            usedV.Add(start);
+            notUsedV.Remove(start);
+            while (notUsedV.Count > 0)
+            {
+                int minE = -1; //номер наименьшего ребра
+                               //поиск наименьшего ребра
+                for (i = 0; i < notUsedE.Count; i++)
+                {
+                    if ((usedV.IndexOf(notUsedE[i].v1) != -1) && (notUsedV.IndexOf(notUsedE[i].v2) != -1) ||
+                        (usedV.IndexOf(notUsedE[i].v2) != -1) && (notUsedV.IndexOf(notUsedE[i].v1) != -1))
+                    {
+                        if (minE != -1)
+                        {
+                            if (notUsedE[i].weight < notUsedE[minE].weight)
+                                minE = i;
+                        }
+                        else
+                            minE = i;
+                    }
+                }
+                //заносим новую вершину в список использованных и удаляем ее из списка неиспользованных
+                if (usedV.IndexOf(notUsedE[minE].v1) != -1)
+                {
+                    usedV.Add(notUsedE[minE].v2);
+                    notUsedV.Remove(notUsedE[minE].v2);
+                }
+                else
+                {
+                    usedV.Add(notUsedE[minE].v1);
+                    notUsedV.Remove(notUsedE[minE].v1);
+                }
+                //заносим новое ребро в дерево и удаляем его из списка неиспользованных
+                MST.Add(notUsedE[minE]);
+                notUsedE.RemoveAt(minE);
+            }
+
+            foreach (var item in MST)
+            {
+                Console.WriteLine("{0} {1} - {2}", item.v1, item.v2, item.weight);
+            }
+
+            Graph frame = new Graph();
+            frame.isDirected = false;
+            frame.isWeighted = true;
+            foreach (var item in g.graph)
+            {
+                frame.VertAdd(item.Key);
+            }
+
+            foreach (var item in MST)
+            {   
+                frame.EdgeAdd(item.v1, item.v2, item.weight);
+            }
+            Console.WriteLine("Каркас: ");
+            frame.Show();
+        }
+
         public bool IsStrongConnect()
         {
             bool f = true;
