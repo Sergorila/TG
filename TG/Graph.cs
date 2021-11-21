@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ namespace TG
     public class Graph
     {
         public Dictionary<string, Dictionary<string, int>> graph;
+        public Dictionary<string, int> VERSINI;
         public bool isDirected = true;
         public bool isWeighted = true;
 
@@ -74,6 +76,7 @@ namespace TG
         public Graph(string file)
         {
             graph = new Dictionary<string, Dictionary<string, int>>();
+            VERSINI = new Dictionary<string, int>();
             
             using (StreamReader fileIn = new StreamReader(file, Encoding.GetEncoding(1251)))
             {
@@ -82,6 +85,7 @@ namespace TG
                 isDirected = bool.Parse(fileIn.ReadLine());
                 isWeighted = bool.Parse(fileIn.ReadLine());
                 Dictionary<string, int> verts = new Dictionary<string, int>();
+                int j = 0;
                 while ((temp = fileIn.ReadLine()) != null)
                 {
                     string[] v = temp.Split(' ');
@@ -98,6 +102,8 @@ namespace TG
                     }
 
                     graph.Add(v[0], VertsNext);
+                    VERSINI.Add(v[0], j);
+                    j++;
                 }
             }
         }
@@ -125,6 +131,132 @@ namespace TG
             }
         }
 
+        public int[,] Floyd(out string[,] p)
+        {
+            int[,] a = new int[graph.Keys.Count, graph.Keys.Count];
+            p = new string[graph.Keys.Count, graph.Keys.Count];
+            
+            string t = "";
+            foreach (var u in graph.Keys)
+            {
+                
+                foreach (var j in graph.Keys)
+                {
+                    if (u == j)
+                    {
+                        a[VERSINI[u], VERSINI[j]] = 0;
+                    }
+                    else
+                    {
+                        if (!graph[u].ContainsKey(j))
+                        {
+                            a[VERSINI[u], VERSINI[j]] = int.MaxValue;
+                        }
+                        else
+                        {
+                            if (isWeighted == true)
+                            {
+                                a[VERSINI[u], VERSINI[j]] = graph[u][j];
+                            }
+                            else
+                            {
+                                a[VERSINI[u], VERSINI[j]] = 1;
+                            }
+                        }
+                    }
+                    p[VERSINI[u], VERSINI[j]] = "-1";
+                }
+                
+            }
+
+            foreach (var k in graph.Keys)
+            {
+                foreach (var u in graph.Keys)
+                {
+                    foreach (var j in graph.Keys)
+                    {
+                        if (graph[u].ContainsKey(k) && graph[k].ContainsKey(j))
+                        {
+                            int distance = a[VERSINI[u], VERSINI[k]] + a[VERSINI[k], VERSINI[j]];
+                            if (a[VERSINI[u], VERSINI[j]] > distance)
+                            {
+                                a[VERSINI[u], VERSINI[j]] = distance;
+                                p[VERSINI[u], VERSINI[j]] = k;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return a;
+        }
+
+        public void WayFloyd(string a, string b, string[,] p, ref Queue<string> items)
+        {
+            string k = p[VERSINI[a], VERSINI[b]];
+            if (k != "-1")
+            {
+                // рекурсивно восстанавливаем путь между вершинами а и k
+                WayFloyd(a, k, p, ref items);
+                items.Enqueue(k); //помещаем вершину к в очередь
+                              // рекурсивно восстанавливаем путь между вершинами k и b
+                WayFloyd(k, b, p, ref items);
+            }
+        }
+
+        public void FloydShow(string v, string v1, string v2)
+        {
+            string[,] p;
+            int[,] a = Floyd(out p);
+            int count = 0;
+
+            Console.WriteLine("Путь из " + v + " до " + v1);
+            if (a[VERSINI[v], VERSINI[v1]] == int.MaxValue)
+            {
+                Console.WriteLine("Пути из вершины {0} в вершину {1} не существует", v, v1);
+            }
+            else
+            {
+                Console.Write("Кратчайший путь от вершины {0} до вершины {1} равен {2}, ", v, v1, a[VERSINI[v], VERSINI[v1]]);
+                Console.Write(" путь ");
+                Queue<string> items = new Queue<string>();
+                items.Enqueue(v);
+                WayFloyd(v, v1, p, ref items);
+                items.Enqueue(v1);
+                while (items.Count != 0)
+                {
+                    Console.Write("{0} ", items.Dequeue());
+                    count++;
+                }
+                Console.WriteLine();
+                Console.WriteLine("Длина пути = " + (count - 1));
+            }
+
+            count = 0;
+            Console.WriteLine("Путь из " + v + " до " + v2);
+            if (a[VERSINI[v], VERSINI[v2]] == int.MaxValue)
+            {
+                Console.WriteLine("Пути из вершины {0} в вершину {1} не существует", v, v2);
+            }
+            else
+            {
+                Console.Write("Кратчайший путь от вершины {0} до вершины {1} равен {2}, ", v, v2, a[VERSINI[v], VERSINI[v2]]);
+                Console.Write(" путь ");
+                Queue<string> items = new Queue<string>();
+                items.Enqueue(v);
+                WayFloyd(v, v2, p, ref items);
+                items.Enqueue(v2);
+                while (items.Count != 0)
+                {
+                    Console.Write("{0} ", items.Dequeue());
+                    count++;
+                }
+                Console.WriteLine();
+                Console.WriteLine("Длина пути = " + (count-1));
+            }
+        }
+
+
         public long[] ShortPaths(string v)
         {
             NovSet();
@@ -145,7 +277,12 @@ namespace TG
                     if (!graph[u].ContainsKey(j) || u == j)
                         c[VERSINI[u], VERSINI[j]] = int.MaxValue;
                     else
-                        c[VERSINI[u], VERSINI[j]] = 1;
+                        if (isWeighted)
+                        {
+                            c[VERSINI[u], VERSINI[j]] = graph[u][j];
+                        }
+                        else
+                            c[VERSINI[u], VERSINI[j]] = 1;
                 }
             }
             long[] d = new long[graph.Keys.Count];
@@ -182,6 +319,102 @@ namespace TG
             }
             return d;   
                 
+        }
+
+        public void BelFord(string v, string t)
+        {
+            int[] dist = new int[graph.Keys.Count];
+            List<int> p = new List<int>();
+
+            foreach (var u in graph.Keys)
+            {
+                dist[VERSINI[u]] = int.MaxValue;
+                p.Add(-1);
+            }
+            dist[VERSINI[v]] = 0;
+
+            List<Edge> ed = new List<Edge>();
+            List<string> verts = new List<string>();
+
+            foreach (var item in graph.Keys)
+            {
+                verts.Add(item);
+                foreach (var elem in graph[item])
+                {
+                    Edge temp = new Edge(item, elem.Key, elem.Value);
+                    ed.Add(temp);
+                }
+            }
+
+            int x = -1;
+            for (int i = 0; i < graph.Keys.Count; i++)
+            {
+                x = -1;
+                for (int j = 0; j < ed.Count; j++)
+                {
+                    string v1 = ed[j].v1;
+                    string v2 = ed[j].v2;
+                    int weight = ed[j].weight;
+                    if (dist[VERSINI[v1]] != int.MaxValue && dist[VERSINI[v1]] + weight < dist[VERSINI[v2]])
+                    {
+                        dist[VERSINI[v2]] = dist[VERSINI[v1]] + weight;
+                        p[VERSINI[v2]] = VERSINI[v1];
+                        x = VERSINI[v2];
+                    }
+                }
+            }
+
+            for (int i = 0; i < ed.Count; i++)
+            {
+                string v1 = ed[i].v1;
+                string v2 = ed[i].v2;
+                int weight = ed[i].weight;
+
+                if (dist[VERSINI[v1]] != int.MaxValue && dist[VERSINI[v1]] + weight < dist[VERSINI[v2]])
+                {
+                    Console.WriteLine("Есть отрицательный цикл");
+                }
+            }
+
+            Console.WriteLine("Расстояние от " + v + " до " + t + " = " + dist[VERSINI[t]]);
+            Console.WriteLine("Путь: ");
+            if (x == -1)
+            {
+                List<int> path = new List<int>();
+                for (int cur = VERSINI[t]; cur != -1; cur = p[cur])
+                {
+                    path.Add(cur);
+                }
+                path.Reverse();
+                for (int i = 0; i < path.Count; i++)
+                {
+                    Console.Write(path[i] + "  ");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Отрицательный цикл");
+                int y = x;
+                for (int i = 0; i < graph.Keys.Count; i++)
+                {
+                    y = p[y];
+                }
+                List<int> path = new List<int>();
+                for (int cur = y; ; cur = p[cur])
+                {
+                    path.Add(cur);
+                    if (cur == y && path.Count > 1)
+                    {
+                        break;
+                    }
+                }
+                path.Reverse();
+                for (int i = 0; i < path.Count; i++)
+                {
+                    Console.Write(path[i] + " ");
+                }
+            }
+            Console.WriteLine();
         }
 
         public void Center()

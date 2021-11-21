@@ -21,13 +21,14 @@ namespace TG
             string path5 = "DirForComp1.txt";
             string path6 = "DirForComp2.txt";
             string path7 = "DirForComp3.txt";
+            string path8 = "Floyd.txt";
             string fout = "output.txt";
-            string s = AddG(path1, path2, path3, path4, path5, path6, path7);
+            string s = AddG(path1, path2, path3, path4, path5, path6, path7, path8);
             Graph g = new Graph(s);
             Interface.Menu(g, fout);
         }
 
-        static string AddG(string s1, string s2, string s3, string s4, string s5, string s6, string s7)
+        static string AddG(string s1, string s2, string s3, string s4, string s5, string s6, string s7, string s8)
         {
             Console.WriteLine("Выберите файл:");
             Console.WriteLine("1 - Directed.txt");
@@ -35,8 +36,9 @@ namespace TG
             Console.WriteLine("3 - NoDirected.txt");
             Console.WriteLine("4 - NoDirectedWeighted.txt");
             Console.WriteLine("5 - DirForComp1.txt");
-            Console.WriteLine("5 - DirForComp2.txt");
-            Console.WriteLine("5 - DirForComp3.txt");
+            Console.WriteLine("6 - DirForComp2.txt");
+            Console.WriteLine("7 - DirForComp3.txt");
+            Console.WriteLine("8 - WeightedGraph.txt");
             int n = int.Parse(Console.ReadLine());
             switch (n)
             {
@@ -61,9 +63,12 @@ namespace TG
                 case 7:
                     return s7;
                     break;
+                case 8:
+                    return s8;
+                    break;
                 default:
                     Console.WriteLine("Попробуйте ещё рaз");
-                    AddG(s1, s2, s3, s4, s5, s6, s7);
+                    AddG(s1, s2, s3, s4, s5, s6, s7, s8);
                     break;
             }
             return "";

@@ -24,6 +24,8 @@ namespace TG
             Console.WriteLine("11 - Проверка на сильную связь");
             Console.WriteLine("12 - Центр");
             Console.WriteLine("13 - Каркас (Прим)");
+            Console.WriteLine("14 - Вывести длины кратчайших путей от u до v1 и v2");
+            Console.WriteLine("15 - Вывести кратчайший путь из вершины u до вершины v");
             int n = int.Parse(Console.ReadLine());
             if (n == 1)
             {
@@ -92,7 +94,7 @@ namespace TG
                 return 0;
             }
 
-            if (n > 13 || n < 1)
+            if (n > 15 || n < 1)
             {
                 Console.WriteLine("Попробуйте заново и введите данные корректно");
                 Menu(g, fout);
@@ -155,6 +157,28 @@ namespace TG
             if (n == 13)
             {
                 g.Prim(g);
+                Menu(g, fout);
+            }
+
+            if (n == 14)
+            {
+                Console.WriteLine("Введите v");
+                string v = Console.ReadLine();
+                Console.WriteLine("Введите v1");
+                string v1 = Console.ReadLine();
+                Console.WriteLine("Введите v2");
+                string v2 = Console.ReadLine();
+                g.FloydShow(v, v1, v2);
+                Menu(g, fout);
+            }
+
+            if (n == 15)
+            {
+                Console.WriteLine("Введите v1");
+                string v = Console.ReadLine();
+                Console.WriteLine("Введите v2");
+                string v1 = Console.ReadLine();
+                g.BelFord(v, v1);
                 Menu(g, fout);
             }
 
